@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Satvik Saha">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Minesweeper">
+    
+    <title>Typing Test</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://sahasatvik.github.io/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://sahasatvik.github.io/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://sahasatvik.github.io/icons/favicon-16x16.png">
+    <link rel="manifest" href="https://sahasatvik.github.io/icons/site.webmanifest">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" > 
+    <link rel="stylesheet" href="https://sahasatvik.github.io/cards.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="typingtest.js"></script>
+</head>
+<body>
+    <div id="global-container">
+        <div id="logo-container">
+            <img id="logo" src="https://sahasatvik.github.io/logo_alpha.svg" alt="" onmouseup="toggleTheme()"/>
+            <div id="typingtest">Typing Test</div>
+        </div>
+        <div id="stage">
+            <div id="console">
+                <div id="wpm">50wpm</div><div id="accuracy">100%</div>
+            </div>
+            <div id="testtext-container">
+                <div id="testtext-typed"></div><div id="testtext-untyped"></div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" charset="utf-8">
+
+        var x = document.getElementsByClassName("card");
+        var light;
+        
+        try {
+            light = JSON.parse(localStorage.getItem("light"));
+            if (light == null) {light = false;}
+        } catch (err) {
+            light = false;
+        }
+        
+        function lightTheme() {
+            document.getElementById("logo").classList.add("inverted");
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("card-dark");
+            }
+            document.body.style.backgroundColor = "#f2f2f2";
+            document.getElementById("typingtest").style.color = "#1d1f21";
+            document.getElementById("stage").style.color = "#1d1f21";
+        }
+        function darkTheme() {
+            document.getElementById("logo").classList.remove("inverted");
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.add("card-dark");
+            }
+            document.body.style.backgroundColor = "#1d1f21";
+            document.getElementById("typingtest").style.color = "#ffffff";
+            document.getElementById("stage").style.color = "#ffffff";
+        }
+        function toggleTheme() {
+            light = !light;
+            refreshTheme();
+        }
+        function refreshTheme() {
+            theme = light? lightTheme : darkTheme;
+            theme();
+            try {
+                localStorage.setItem("light", JSON.stringify(light));
+            } catch (err) {}
+        }
+        refreshTheme();
+        
+        init();
+        setInterval(update, 1000);
+        document.onkeydown = keyDownEventListener;
+    </script>
+</body>
+</html>
